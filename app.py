@@ -3,7 +3,7 @@ import pandas as pd
 
 # Define the API endpoint and your API token
 api_url = 'https://api.football-data.org/v4/competitions/WC/matches'
-headers = {'X-Auth-Token': '9b3bba4a9ab24ab68b70aac4677adbbe'}  # Replace with your actual API token
+headers = {'X-Auth-Token': '02c8648f03b64960af5df010463cc253'}  # Replace with your actual API token
 
 # Send a GET request to the API
 response = requests.get(api_url, headers=headers)
