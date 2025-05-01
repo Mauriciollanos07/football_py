@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 import dash
 from dash import dcc, html
-import dash_table
+from dash import dash_table
 
 # API and token
 API_URL_MATCHES = 'https://api.football-data.org/v4/competitions/WC/matches'
@@ -81,6 +81,7 @@ for stage_code in stage_order:
         style_table={'overflowX': 'auto'},
         style_cell={'textAlign': 'left', 'padding': '5px'},
         style_header={'fontWeight': 'bold', 'backgroundColor': '#f2f2f2'},
+        page_size=4
     )
 
     # Chart
