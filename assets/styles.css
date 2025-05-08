@@ -73,9 +73,99 @@ img {
     background-color: #2b010e;
 }
 
+
 h3 {
     justify-self: center;
     color: #2a010f;
     padding-left: 3vh;
     padding-right: 3vh;
+}
+
+.wc-table {
+    border: solid;
+    border-width: 0.5vw;
+    border-color:#801036;
+    background-color: #801036;
+    width: 100%;
+    height: 100%;
+}
+
+.cl-table {
+    border: solid;
+    border-width: 0.5vw;
+    border-color:#0364ff;
+    background-color: #0364ff;
+    width: 100%;
+    height: 100%;
+}
+
+th {
+    padding-left: 2vh;
+    padding-right: 2vh;
+}
+
+td {
+    padding-left: 2vh;
+    padding-right: 2vh;
+}
+
+.wc-table-header {
+    background-color: #801036;
+    color: whitesmoke;
+    border-width: 2vw;
+    font-weight: bolder;
+}
+
+.wc-tr {
+    background-color: #2a010f;
+    border: solid;
+}
+
+.cl-table-header {
+    background-color: #0364ff;
+    color: whitesmoke;
+    border-width: 2vw;
+    font-weight: bolder;
+}
+
+.cl-tr {
+    background-color: #01164b;
+    border: solid;
+}
+
+.wc-table-caption {
+    margin: 1vh;
+    padding: 1vh;
+    font-size: 2vh;
+    font-weight: bolder;
+}
+
+.cl-table-caption {
+    margin: 1vh;
+    padding: 1vh;
+    font-size: 2vh;
+    font-weight: bolder;
+    background-color: #01164b;
+}
+
+.matchup-container{
+    width: 40vw;
+    height: 25vh;
+    display: grid;
+    justify-self: center;
+    border: solid;
+    border-color: #01164b;
+    border-width: 0.5vw;
+    background-color: #f5f0ec;
+}
+
+.matchup-header{
+    justify-self: center;
+    color: #01164b;
+    font-weight: bold;
+    padding-left: 1vh;
+    padding-right: 1vh;
+    padding-bottom: 3vh;
+    margin-left: 1vw;
+    margin-right: 1vw;
 }
