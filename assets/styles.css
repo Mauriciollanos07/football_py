@@ -1,0 +1,171 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+img {
+    width: 100%;
+}
+
+.generic-text {
+    color: #2a010f;
+    padding-left: 3vh;
+    padding-right: 3vh;
+}
+
+.generic-text-2 {
+    justify-self: center;
+    color: #2a010f;
+    font-weight: bold;
+    padding-left: 1vh;
+    padding-right: 1vh;
+    padding-bottom: 3vh;
+    margin-left: 1vw;
+    margin-right: 1vw;
+}
+
+.wrapper {
+    background-color: #f5f0ec;
+    display: flex;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 100vw;
+}
+
+.unordered-list {
+    border: solid;
+    border-width: 1px;
+    border-color:#2a010f;
+    padding-left: 1vh;
+    padding-right: 1vh;
+}
+
+.flex-spans {
+    display: grid;
+    padding-left: 1%;
+    padding-right: 1%;
+    overflow: auto;
+}
+
+.spans-container {
+    display: flex;
+    justify-content: center;
+}
+
+.main-container {
+    background-color: #f5f0ec;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+.main-container-cl {
+    background-color: #01164b;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+} 
+
+.tabs-content {
+    background-color: #2b010e;
+}
+
+
+h3 {
+    justify-self: center;
+    color: #2a010f;
+    padding-left: 3vh;
+    padding-right: 3vh;
+}
+
+.wc-table {
+    border: solid;
+    border-width: 0.5vw;
+    border-color:#801036;
+    background-color: #801036;
+    width: 100%;
+    height: 100%;
+}
+
+.cl-table {
+    border: solid;
+    border-width: 0.5vw;
+    border-color:#0364ff;
+    background-color: #0364ff;
+    width: 100%;
+    height: 100%;
+}
+
+th {
+    padding-left: 2vh;
+    padding-right: 2vh;
+}
+
+td {
+    padding-left: 2vh;
+    padding-right: 2vh;
+}
+
+.wc-table-header {
+    background-color: #801036;
+    color: whitesmoke;
+    border-width: 2vw;
+    font-weight: bolder;
+}
+
+.wc-tr {
+    background-color: #2a010f;
+    border: solid;
+}
+
+.cl-table-header {
+    background-color: #0364ff;
+    color: whitesmoke;
+    border-width: 2vw;
+    font-weight: bolder;
+}
+
+.cl-tr {
+    background-color: #01164b;
+    border: solid;
+}
+
+.wc-table-caption {
+    margin: 1vh;
+    padding: 1vh;
+    font-size: 2vh;
+    font-weight: bolder;
+}
+
+.cl-table-caption {
+    margin: 1vh;
+    padding: 1vh;
+    font-size: 2vh;
+    font-weight: bolder;
+    background-color: #01164b;
+}
+
+.matchup-container{
+    width: 40vw;
+    height: 25vh;
+    display: grid;
+    justify-self: center;
+    border: solid;
+    border-color: #01164b;
+    border-width: 0.5vw;
+    background-color: #f5f0ec;
+}
+
+.matchup-header{
+    justify-self: center;
+    color: #01164b;
+    font-weight: bold;
+    padding-left: 1vh;
+    padding-right: 1vh;
+    padding-bottom: 3vh;
+    margin-left: 1vw;
+    margin-right: 1vw;
+}
