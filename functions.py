@@ -1,7 +1,6 @@
 import pandas as pd
 import dash
 from dash import dcc, html
-from dash import dash_table
 import math
 
 def get_mathces_list_wc (jason_file):

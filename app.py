@@ -1,11 +1,9 @@
 import requests
 import pandas as pd
-import plotly.express as px
 import dash
 from dash import dcc, html
-from dash import dash_table
 from functions import get_mathces_list_wc, get_mathces_list_cl, get_wc_stage_component, get_cl_stage_component
-from dash import Input, Output, callback, MATCH
+from dash import Input, Output, callback
 from dash import ctx
 import time
 
@@ -62,6 +60,7 @@ tabs = []
 
 # Initialize app
 app = dash.Dash(__name__)
+server = app.server
 app.title = "World Cup 2022 Dashboard"
 
 
