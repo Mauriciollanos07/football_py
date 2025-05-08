@@ -8,9 +8,6 @@ from dash import ctx
 import time
 
 # API and token
-API_URL_MATCHES_WC = 'https://api.football-data.org/v4/competitions/WC/matches'
-API_URL_MATCHES_CL = 'https://api.football-data.org/v4/competitions/CL/matches'
-API_TOKEN = '02c8648f03b64960af5df010463cc253'
 headers = {'X-Auth-Token': API_TOKEN}
 
 # Fetch 2022 World Cup match data
