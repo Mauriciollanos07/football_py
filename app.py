@@ -6,6 +6,11 @@ from functions import get_mathces_list_wc, get_mathces_list_cl, get_wc_stage_com
 from dash import Input, Output, callback
 from dash import ctx
 import time
+import os
+
+API_TOKEN = os.environ.get('API_TOKEN')
+API_URL_MATCHES_WC = os.environ.get('API_URL_MATCHES_WC')
+API_URL_MATCHES_CL = os.environ.get('API_URL_MATCHES_CL')
 
 # API and token
 headers = {'X-Auth-Token': API_TOKEN}
