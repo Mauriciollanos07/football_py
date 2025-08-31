@@ -7,6 +7,7 @@ from dash import Input, Output, callback
 from dash import ctx
 import time
 import os
+#from config import API_TOKEN, API_URL_MATCHES_WC, API_URL_MATCHES_CL
 
 API_TOKEN = os.environ.get('API_TOKEN')
 API_URL_MATCHES_WC = os.environ.get('API_URL_MATCHES_WC')
@@ -16,13 +17,21 @@ API_URL_MATCHES_CL = os.environ.get('API_URL_MATCHES_CL')
 headers = {'X-Auth-Token': API_TOKEN}
 
 # Fetch 2022 World Cup match data
-wc_resp = requests.get(API_URL_MATCHES_WC, headers=headers)
-wc_data = wc_resp.json()
-wc_matches = wc_data.get('matches', [])
+try:
+    wc_resp = requests.get(API_URL_MATCHES_WC, headers=headers)
+    wc_resp.raise_for_status()
+    wc_data = wc_resp.json()
+    wc_matches = wc_data.get('matches', [])
+except (requests.RequestException, ValueError, KeyError):
+    wc_matches = []
 
-cl_resp = requests.get(API_URL_MATCHES_CL, headers=headers)
-cl_data = cl_resp.json()
-cl_matches = cl_data.get('matches', [])
+try:
+    cl_resp = requests.get(API_URL_MATCHES_CL, headers=headers)
+    cl_resp.raise_for_status()
+    cl_data = cl_resp.json()
+    cl_matches = cl_data.get('matches', [])
+except (requests.RequestException, ValueError, KeyError):
+    cl_matches = []
 
 # Prepare the WC data
 wc_match_list = get_mathces_list_wc(wc_matches)
