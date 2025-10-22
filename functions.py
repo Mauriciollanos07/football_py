@@ -3,6 +3,12 @@ import dash
 from dash import dcc, html
 import math
 
+WC_MAIN_BG_COLOR = 'black'
+WC_MAIN_COLOR = 'whitesmoke'
+
+CL_MAIN_BG_COLOR = '#01164b'
+CL_MAIN_COLOR = '#f5f0ec'
+
 def get_mathces_list_wc (jason_file):
     try:
         list = []
@@ -121,11 +127,13 @@ def get_wc_stage_component(df, stage_code, stage_label):
                 )
         else:
             stage_df = stage_df.sort_values("Date")
+            stage_df['Home Team'] = stage_df['Home Team'].fillna('TBD')
+            stage_df['Away Team'] = stage_df['Away Team'].fillna('TBD')
             display_cols = ["Date", "Home Team", "Home Score", "Away Score", "Away Team"]
             match_elements = []
             for index, row in stage_df.iterrows():
                 match_elements.append(
-                    html.Span(f"{row['Home Team']} vs. {row['Away Team']}", className="generic-text-2", id=f"{row['Home Team']}-vs-{row['Away Team']}-wc-match")
+                    html.Span(f"{row['Home Team']} vs. {row['Away Team']}", className="generic-text-2", id=f"{row['Home Team']}-vs-{row['Away Team']}-wc-match-{index}")
                 )
             stage_component.append(
                 html.Div([
@@ -148,7 +156,7 @@ def get_wc_stage_component(df, stage_code, stage_label):
                         className="wc-table-body")], className="wc-table"
                 )
             ],
-            style={'backgroundColor': '#2b010e', 'color': 'white', 'justifyContent': 'center', 'alignItems': 'center'}
+            style={'backgroundColor': 'whitesmoke', 'color': WC_MAIN_BG_COLOR, 'justifyContent': 'center', 'alignItems': 'center'}
         )
     except Exception:
         return html.Div("Error loading World Cup data")
@@ -185,7 +193,7 @@ def get_cl_stage_component(df, stage_code, stage_label):
                                 label=f"Match Day {m}",
                                 children=match_day_tables[i],
                                 value=f'{m}',
-                                style={'backgroundColor': '#01164b', 'color': 'white', 'justifyContent': 'center', 'alignItems': 'center'}) for i, m in enumerate(match_day_list)
+                                style={'backgroundColor': f'{CL_MAIN_BG_COLOR}', 'color': 'white', 'justifyContent': 'center', 'alignItems': 'center'}) for i, m in enumerate(match_day_list)
                                 ])
             return html.Div(
             id=f"{stage_code}_tab_cl",
@@ -193,7 +201,7 @@ def get_cl_stage_component(df, stage_code, stage_label):
         
         stage_teams = stage_df.drop_duplicates(subset="Home Team", keep="first").to_dict("records")
         stage_teams_list = [[m['Home Team'], m['Away Team']] for m in stage_teams]
-        print(stage_teams_list)
+        #print(stage_teams_list)
         matchups_dict = {}
         for m in stage_teams_list:
             if m[0] == None or m[1] == None:
@@ -203,10 +211,10 @@ def get_cl_stage_component(df, stage_code, stage_label):
                 matchups_dict[f"{sorted_key[0]} vs {sorted_key[1]}"].append(m)
             else:
                 matchups_dict.update({f"{sorted_key[0]} vs {sorted_key[1]}": [m]})
-        print(matchups_dict)
+        #print(matchups_dict)
         stage_component = []
         for key, value in matchups_dict.items():
-            print(f"{key} : {value}")
+            #print(f"{key} : {value}")
             div_elements = []
             for v in value:
                 # Filter the DataFrame for the specific matchup
@@ -245,6 +253,6 @@ def get_cl_stage_component(df, stage_code, stage_label):
             id=f"{stage_code}_tab_cl",
             children=stage_component,
             className="wrapper",
-            style={'backgroundColor': '#01164b', 'color': 'white', 'justifyContent': 'center', 'alignItems': 'center'})
+            style={'backgroundColor': f'{CL_MAIN_BG_COLOR}', 'color': 'white', 'justifyContent': 'center', 'alignItems': 'center'})
     except Exception:
         return html.Div("Error loading Champions League data")
