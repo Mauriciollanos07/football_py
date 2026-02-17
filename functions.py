@@ -2,12 +2,7 @@ import pandas as pd
 import dash
 from dash import dcc, html
 import math
-
-WC_MAIN_BG_COLOR = 'black'
-WC_MAIN_COLOR = 'whitesmoke'
-
-CL_MAIN_BG_COLOR = '#01164b'
-CL_MAIN_COLOR = '#f5f0ec'
+from constants import WC_PRIMARY_COLOR, WC_MAIN_BG_COLOR, WC_MAIN_COLOR, CL_PRIMARY_COLOR, CL_MAIN_BG_COLOR, CL_MAIN_COLOR
 
 def get_mathces_list_wc (jason_file):
     """ This function takes the JSON response from the API and returns a list of dictionaries with the relevant match information for the World Cup. 
@@ -191,7 +186,7 @@ def get_wc_stage_component(df, stage_code, stage_label):
                         className="wc-table-body")], className="wc-table"
                 )
             ],
-            style={'backgroundColor': 'whitesmoke', 'color': WC_MAIN_BG_COLOR, 'justifyContent': 'center', 'alignItems': 'center'}
+            style={'backgroundColor': 'black', 'color': 'whitesmoke', 'justifyContent': 'center', 'alignItems': 'center'}
         )
     except Exception:
         return html.Div("Error loading World Cup data")
@@ -243,7 +238,8 @@ def get_cl_stage_component(df, stage_code, stage_label):
                                 ])
             return html.Div(
                 id=f"{stage_code}_tab_cl",
-                children=select_match_day
+                children=select_match_day,
+                style={'backgroundColor': f'{CL_MAIN_BG_COLOR}', 'color': 'white', 'justifyContent': 'center', 'alignItems': 'center'}
             )
         
         stage_teams = stage_df.drop_duplicates(subset="Home Team", keep="first").to_dict("records")
@@ -272,8 +268,8 @@ def get_cl_stage_component(df, stage_code, stage_label):
                         div_elements.append(
                             html.Div(
                             f"{row['Home Team']} vs. {row['Away Team']}",
-                            className="generic-text-2",
-                            id=f"{row['Home Team']}-vs-{row['Away Team']}-cl-match"
+                            className="generic-text-3",
+                            id=f"{row['Home Team']}-vs-{row['Away Team']}-cl-match",
                             )
                         )
                     else:
@@ -297,8 +293,8 @@ def get_cl_stage_component(df, stage_code, stage_label):
 
         return html.Div(
             id=f"{stage_code}_tab_cl",
-            children=stage_component,
-            className="wrapper",
+            children=stage_component if len(stage_component) > 0 else html.H2("No matches available for this stage"),
+            className="wrapper-2",
             style={'backgroundColor': f'{CL_MAIN_BG_COLOR}', 'color': 'white', 'justifyContent': 'center', 'alignItems': 'center'})
     except Exception:
         return html.Div("Error loading Champions League data")
