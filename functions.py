@@ -10,6 +10,16 @@ CL_MAIN_BG_COLOR = '#01164b'
 CL_MAIN_COLOR = '#f5f0ec'
 
 def get_mathces_list_wc (jason_file):
+    """ This function takes the JSON response from the API and returns a list of dictionaries with the relevant match information for the World Cup. 
+    It handles both group stage matches and knockout stage matches, including those that went to penalties. 
+        args:
+            jason_file (list): A list of dictionaries containing match data from the API response.
+        returns:
+            list: A list of dictionaries with the following keys: "Date", "Stage", "Group", "Home Team", "Away Team", "Home Score", "Away Score", "Winner". The "Group" key will be None for knockout stage matches. 
+            The "Winner" key will be an empty string for group stage matches and will contain the name of the winning team for knockout stage matches. 
+            The "Home Score" and "Away Score" keys will contain the regular time score for group stage matches and the combined regular time and extra time score for knockout stage matches. 
+            If a match went to penalties, the "Home Score" and "Away Score" keys will also include the penalties score in parentheses. If there is an error processing the data, the function will return an empty list.
+    """
     try:
         list = []
         for match in jason_file:
@@ -57,6 +67,15 @@ def get_mathces_list_wc (jason_file):
         return []
 
 def get_mathces_list_cl (jason_file):
+    """ This function takes the JSON response from the API and returns a list of dictionaries with the relevant match information for the Champions League. 
+    It handles both league stage matches and knockout stage matches. 
+        args:
+            jason_file (list): A list of dictionaries containing match data from the API response.
+        returns:
+            list: A list of dictionaries with the following keys: "Date", "Stage", "Home Team", "Away Team", "Home Score", "Away Score", "Winner", "Match Day". 
+            The "Winner" key will contain the name of the winning team for knockout stage matches and will be an empty string for league stage matches. 
+            The "Home Score" and "Away Score" keys will contain the regular time score for league stage matches and the combined regular time and extra time score for knockout stage matches. 
+            If there is an error processing the data, the function will return an empty list."""
     try:
         list = []
         for match in jason_file:
@@ -91,6 +110,18 @@ def get_mathces_list_cl (jason_file):
 
 
 def get_wc_stage_component(df, stage_code, stage_label):
+    """ This function takes a DataFrame containing World Cup match data, a stage code, and a stage label, and returns a Dash HTML component that displays the matches for that stage. 
+    The function filters the DataFrame for the specified stage and creates a component that displays the matches in a table format. 
+    For the group stage, it also groups the teams by their respective groups and displays them in separate sections. 
+    If there is an error processing the data, the function returns a simple HTML div with an error message. 
+        args:
+            df (DataFrame): A DataFrame containing World Cup match data with columns "Date", "Stage", "Group", "Home Team", "Away Team", "Home Score", "Away Score", and "Winner".
+            stage_code (str): The code for the stage to filter the matches.
+            stage_label (str): The label for the stage to display in the component.
+        returns:
+            A Dash HTML component that displays the matches for the specified stage in a table format. For the group stage, it also groups the teams by their respective groups and displays them in separate sections. 
+            If there is an error processing the data, it returns a simple HTML div with an error message.
+            """
     try:
         df = pd.DataFrame(df)
         # Filter the DataFrame for the current stage
@@ -104,14 +135,18 @@ def get_wc_stage_component(df, stage_code, stage_label):
             stage_teams = []
             stage_df = stage_df.sort_values(["Group", "Date"])
             display_cols = ["Date", "Group", "Home Team", "Home Score", "Away Score", "Away Team"]
-            stage_groups = stage_df.drop_duplicates(subset="Group", keep="first").to_dict("records")
+            #Extract unique groups and teams for the group stage
+            stage_groups = stage_df["Group"].unique().tolist()
             for m in stage_groups:
-                stage_list.append(m["Group"])
+                stage_list.append(m)
+
+            # Filter df for groups and extract unique teams for each group, then append to stage_teams list as dictionaries with team name and group name. This will be used to display teams by group in the component.
             for index, row in stage_df.iterrows():
                 if {"team": row["Home Team"], "group": row["Group"]} not in stage_teams:
                     stage_teams.append({"team": row["Home Team"], "group": row["Group"]})
                 if {"team": row["Away Team"], "group": row["Group"]} not in stage_teams:
                     stage_teams.append({"team": row["Away Team"], "group": row["Group"]})
+
             for g in stage_list:
                 group_elements = []
                 for t in stage_teams:
@@ -163,6 +198,18 @@ def get_wc_stage_component(df, stage_code, stage_label):
 
 
 def get_cl_stage_component(df, stage_code, stage_label):
+    """ This function takes a DataFrame containing Champions League match data, a stage code, and a stage label, and returns a Dash HTML component that displays the matches for that stage. 
+    The function filters the DataFrame for the specified stage and creates a component that displays the matches in a table format. 
+    For the league stage, it also groups the matches by their respective match days and displays them in separate sections. 
+    If there is an error processing the data, the function returns a simple HTML div with an error message. 
+        args:
+            df (DataFrame): A DataFrame containing Champions League match data with columns "Date", "Stage", "Home Team", "Away Team", "Home Score", "Away Score", "Winner", and "Match Day".
+            stage_code (str): The code for the stage to filter the matches.
+            stage_label (str): The label for the stage to display in the component.
+        returns:
+            A Dash HTML component that displays the matches for the specified stage in a table format. For the league stage, it also groups the matches by their respective match days and displays them in separate sections. 
+            If there is an error processing the data, it returns a simple HTML div with an error message.
+    """
     try:
         df = pd.DataFrame(df)
         # Filter the DataFrame for the current stage
@@ -174,8 +221,7 @@ def get_cl_stage_component(df, stage_code, stage_label):
         display_cols = ["Date", "Home Team", "Home Score", "Away Score", "Away Team"]
 
         if stage_code == "LEAGUE_STAGE":
-            league_stage_days = stage_df.drop_duplicates(subset="Match Day", keep="first").to_dict("records")
-            match_day_list = [m['Match Day'] for m in league_stage_days]
+            match_day_list = stage_df["Match Day"].unique().tolist()
             match_day_tables = []
             for m in match_day_list:
                 new_df = stage_df[stage_df["Match Day"] == m]
@@ -196,12 +242,12 @@ def get_cl_stage_component(df, stage_code, stage_label):
                                 style={'backgroundColor': f'{CL_MAIN_BG_COLOR}', 'color': 'white', 'justifyContent': 'center', 'alignItems': 'center'}) for i, m in enumerate(match_day_list)
                                 ])
             return html.Div(
-            id=f"{stage_code}_tab_cl",
-            children=select_match_day)
+                id=f"{stage_code}_tab_cl",
+                children=select_match_day
+            )
         
         stage_teams = stage_df.drop_duplicates(subset="Home Team", keep="first").to_dict("records")
         stage_teams_list = [[m['Home Team'], m['Away Team']] for m in stage_teams]
-        #print(stage_teams_list)
         matchups_dict = {}
         for m in stage_teams_list:
             if m[0] == None or m[1] == None:
@@ -256,3 +302,4 @@ def get_cl_stage_component(df, stage_code, stage_label):
             style={'backgroundColor': f'{CL_MAIN_BG_COLOR}', 'color': 'white', 'justifyContent': 'center', 'alignItems': 'center'})
     except Exception:
         return html.Div("Error loading Champions League data")
+    

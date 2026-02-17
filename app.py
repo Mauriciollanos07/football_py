@@ -7,12 +7,12 @@ from dash import Input, Output, callback
 from dash import ctx
 import time
 import os
-#from config import API_TOKEN, API_URL_MATCHES_WC, API_URL_MATCHES_CL (for development)
+from config import API_TOKEN, API_URL_MATCHES_WC, API_URL_MATCHES_CL #(for development)
 from functions import WC_MAIN_BG_COLOR, CL_MAIN_BG_COLOR, WC_MAIN_COLOR, CL_MAIN_COLOR
 
-API_TOKEN = os.environ.get('API_TOKEN') # Get API token from environment variable
+""" API_TOKEN = os.environ.get('API_TOKEN') # Get API token from environment variable
 API_URL_MATCHES_WC = os.environ.get('API_URL_MATCHES_WC') # Get WC API URL from environment variable
-API_URL_MATCHES_CL = os.environ.get('API_URL_MATCHES_CL') # Get CL API URL from environment variable
+API_URL_MATCHES_CL = os.environ.get('API_URL_MATCHES_CL') # Get CL API URL from environment variable """
 
 # API and token
 headers = {'X-Auth-Token': API_TOKEN}
@@ -25,7 +25,7 @@ try:
     wc_matches = wc_data.get('matches', [])
 except (requests.RequestException, ValueError, KeyError):
     wc_matches = []
-
+# Fetch 2026 Champions League matches data
 try:
     cl_resp = requests.get(API_URL_MATCHES_CL, headers=headers)
     cl_resp.raise_for_status()
@@ -104,20 +104,14 @@ def update_tab(tournament_tab, wc_tab, cl_tab):
     time.sleep(1)
     if not tab:
         raise 
+    elif tab == "FIFA WORLD CUP" and wc_tab is not None:
+        return get_wc_stage_component(wc_df, wc_tab.split("-")[-1], stage_labels["WC"][wc_tab.split("-")[-1]])
+    elif tab == "2025/2026 CHAMPIONS LEAGUE" and cl_tab is not None:
+        return get_cl_stage_component(cl_df, cl_tab.split("-")[-1], stage_labels["CL"][cl_tab.split("-")[-1]])
     else:
-        if tab == "FIFA WORLD CUP":
-            if wc_tab is None:
-                return html.Div("No data available")
-            else:
-                return get_wc_stage_component(wc_df, wc_tab.split("-")[-1], stage_labels["WC"][wc_tab.split("-")[-1]])
-        elif tab == "2025/2026 CHAMPIONS LEAGUE":
-            if cl_tab is None:
-                return html.Div("No data available")
-            else:
-                return get_cl_stage_component(cl_df, cl_tab.split("-")[-1], stage_labels["CL"][cl_tab.split("-")[-1]])
-        else:
-            return html.H1("Select a tournament")
- 
+        return html.H1("Select a tournament and stage to view the matches.", style={"color": "#4287f5", "textAlign": "center", "padding": "20px"})
+
+
 # Run
 if __name__ == '__main__':
     app.run_server(debug=True)
