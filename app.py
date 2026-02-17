@@ -70,6 +70,7 @@ app.title = "World Cup 2022 Dashboard"
 
 # App layout
 app.layout = html.Div(children=[
+    dcc.Store(id='component-cache', storage_type='memory'),
     dcc.Tabs(id="tabs-main-container", className="tabs", children=[
         dcc.Tab( id="FIFA-WORLD-CUP-MAIN-TAB", label="FIFA WORLD CUP", value="FIFA WORLD CUP", children=[
             html.Div(style={"backgroundColor": WC_MAIN_BG_COLOR}, children=[
@@ -94,22 +95,39 @@ app.layout = html.Div(children=[
 
 @callback(
     Output('loading', 'children'),
+    Output('component-cache', 'data'),
     Input('tabs-main-container', 'value'),
     Input('wc-general-tabs', 'value'),
     Input('cl-general-tabs', 'value'),
+    Input('component-cache', 'data')
 )
-
-def update_tab(tournament_tab, wc_tab, cl_tab):
-    tab = tournament_tab
-    time.sleep(1)
-    if not tab:
-        raise 
-    elif tab == "FIFA WORLD CUP" and wc_tab is not None:
-        return get_wc_stage_component(wc_df, wc_tab.split("-")[-1], stage_labels["WC"][wc_tab.split("-")[-1]])
-    elif tab == "2025/2026 CHAMPIONS LEAGUE" and cl_tab is not None:
-        return get_cl_stage_component(cl_df, cl_tab.split("-")[-1], stage_labels["CL"][cl_tab.split("-")[-1]])
-    else:
-        return html.H1("Select a tournament and stage to view the matches.", style={"color": "#4287f5", "textAlign": "center", "padding": "20px"})
+def update_tab(tournament_tab, wc_tab, cl_tab, cache):
+    if cache is None:
+        cache = {}
+    
+    if not tournament_tab:
+        return html.H1("Select a tournament and stage to view the matches.", style={"color": "#4287f5", "textAlign": "center", "padding": "20px"}), cache
+    
+    # Create cache key
+    if tournament_tab == "FIFA WORLD CUP" and wc_tab:
+        cache_key = f"wc_{wc_tab}"
+        stage_code = wc_tab.split("-")[-1]
+        
+        if cache_key not in cache:
+            component = get_wc_stage_component(wc_df, stage_code, stage_labels["WC"][stage_code])
+            cache[cache_key] = component
+        return cache[cache_key], cache
+    
+    elif tournament_tab == "2025/2026 CHAMPIONS LEAGUE" and cl_tab:
+        cache_key = f"cl_{cl_tab}"
+        stage_code = cl_tab.split("-")[-1]
+        
+        if cache_key not in cache:
+            component = get_cl_stage_component(cl_df, stage_code, stage_labels["CL"][stage_code])
+            cache[cache_key] = component
+        return cache[cache_key], cache
+    
+    return html.H1("Select a tournament and stage to view the matches.", style={"color": "#4287f5", "textAlign": "center", "padding": "20px"}), cache
 
 
 # Run
