@@ -7,12 +7,12 @@ from dash import Input, Output, callback
 from dash import ctx
 import time
 import os
-from config import API_TOKEN, API_URL_MATCHES_WC, API_URL_MATCHES_CL #(for development)
+#from config import API_TOKEN, API_URL_MATCHES_WC, API_URL_MATCHES_CL #(for development)
 from constants import WC_PRIMARY_COLOR, WC_MAIN_BG_COLOR, WC_MAIN_COLOR, CL_PRIMARY_COLOR, CL_MAIN_BG_COLOR, CL_MAIN_COLOR
 
-""" API_TOKEN = os.environ.get('API_TOKEN') # Get API token from environment variable
+API_TOKEN = os.environ.get('API_TOKEN') # Get API token from environment variable
 API_URL_MATCHES_WC = os.environ.get('API_URL_MATCHES_WC') # Get WC API URL from environment variable
-API_URL_MATCHES_CL = os.environ.get('API_URL_MATCHES_CL') # Get CL API URL from environment variable """
+API_URL_MATCHES_CL = os.environ.get('API_URL_MATCHES_CL') # Get CL API URL from environment variable
 
 # API and token
 headers = {'X-Auth-Token': API_TOKEN}
