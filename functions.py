@@ -151,7 +151,7 @@ def get_wc_stage_component(df, stage_code, stage_label):
                         )
                 stage_component.append(
                     html.Div([
-                        html.H3(g),
+                        html.H3(g.replace("_", " ").upper(), style={"textAlign": "center"}),
                         html.Ul(group_elements)
                     ], className="unordered-list", id=f"{g}-wc-group")
                 )
@@ -182,14 +182,14 @@ def get_wc_stage_component(df, stage_code, stage_label):
                         html.Tr([html.Th(col) for col in display_cols], className="wc-table-header")
                     ),
                     html.Tbody(
-                        [html.Tr([html.Td(row[col]) for col in display_cols], className="wc-tr") for index, row in stage_df.iterrows()],
+                        [html.Tr([html.Td(row[col].replace("_", " ").title() if isinstance(row[col], str) else row[col]) for col in display_cols], className="wc-tr") for index, row in stage_df.iterrows()],
                         className="wc-table-body")], className="wc-table"
                 )
             ],
             style={'backgroundColor': 'black', 'color': 'whitesmoke', 'justifyContent': 'center', 'alignItems': 'center'}
         )
-    except Exception:
-        return html.Div("Error loading World Cup data")
+    except Exception as e:
+        return html.Div(f"Error loading World Cup data: {e}")
 
 
 def get_cl_stage_component(df, stage_code, stage_label):
@@ -231,7 +231,7 @@ def get_cl_stage_component(df, stage_code, stage_label):
                             className="cl-table-body")], className="cl-table", style={'color': 'white', 'justifyContent': 'center', 'alignItems': 'center'}
                     ))
             select_match_day = dcc.Tabs(children=[dcc.Tab(id=f"match-day-{m}",
-                                label=f"Match Day {m}",
+                                label=f"Match Day {m:.0f}",
                                 children=match_day_tables[i],
                                 value=f'{m}',
                                 style={'backgroundColor': f'{CL_MAIN_BG_COLOR}', 'color': 'white', 'justifyContent': 'center', 'alignItems': 'center'}) for i, m in enumerate(match_day_list)
@@ -276,7 +276,7 @@ def get_cl_stage_component(df, stage_code, stage_label):
                         div_elements.append(
                             html.Div(
                             f"{row['Home Team']} {int(row['Home Score'])} - {int(row['Away Score'])} {row['Away Team']}",
-                            className="generic-text-2",
+                            className="generic-text-4",
                             id=f"{row['Home Team']}-vs-{row['Away Team']}-cl-match"
                             )
                         )

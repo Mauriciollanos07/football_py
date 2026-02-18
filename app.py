@@ -12,7 +12,7 @@ from constants import WC_PRIMARY_COLOR, WC_MAIN_BG_COLOR, WC_MAIN_COLOR, CL_PRIM
 
 API_TOKEN = os.environ.get('API_TOKEN') # Get API token from environment variable
 API_URL_MATCHES_WC = os.environ.get('API_URL_MATCHES_WC') # Get WC API URL from environment variable
-API_URL_MATCHES_CL = os.environ.get('API_URL_MATCHES_CL') # Get CL API URL from environment variable
+API_URL_MATCHES_CL = os.environ.get('API_URL_MATCHES_CL') # Get CL API URL from environment variable 
 
 # API and token
 headers = {'X-Auth-Token': API_TOKEN}
@@ -77,7 +77,7 @@ app.layout = html.Div(children=[
                 html.Div(
                     html.Img(src="/assets/resources/2026-wc-banner.webp"), id="wc-image"
                 ),
-                html.Div(dcc.Tabs(id="wc-general-tabs", value=f"wc-tab-GROUP_STAGE", children=[dcc.Tab(id=f"wc-tab-{t}", label=f"WC {t}", value=f"wc-tab-{t}", style={"color": CL_MAIN_COLOR, "backgroundColor": WC_MAIN_BG_COLOR, "border": "none", "fontWeight": "bolder"}, selected_style={"backgroundColor": CL_MAIN_COLOR, "color": WC_MAIN_BG_COLOR, "fontWeight": "bolder"}) for t in stage_order["WC"]]),
+                html.Div(dcc.Tabs(id="wc-general-tabs", value=f"wc-tab-GROUP_STAGE", children=[dcc.Tab(id=f"wc-tab-{t}", label=f"{t.replace('_', ' ').title()}", value=f"wc-tab-{t}", style={"color": CL_MAIN_COLOR, "backgroundColor": WC_MAIN_BG_COLOR, "border": "none", "fontWeight": "bolder"}, selected_style={"backgroundColor": CL_MAIN_COLOR, "color": WC_MAIN_BG_COLOR, "fontWeight": "bolder"}) for t in stage_order["WC"]]),
                 className="tabs-container-wc", id="wc-tabs-container", style={"width": "100%"})])
         ]),
         dcc.Tab( id="CHAMPIONS-LEAGUE-MAIN-TAB", label="2025/2026 CHAMPIONS LEAGUE", value="2025/2026 CHAMPIONS LEAGUE", children=[
@@ -85,12 +85,19 @@ app.layout = html.Div(children=[
                 html.Div(
                     html.Img(src="/assets/resources/Champions-League.avif"), id="cl-image"
                 ),
-                html.Div(dcc.Tabs(id="cl-general-tabs", value=f"cl-tab-LEAGUE_STAGE", children=[dcc.Tab(id=f"cl-tab-{t}", label=f"CL {t}", value=f"cl-tab-{t}", style={"color": CL_MAIN_COLOR, "backgroundColor": CL_MAIN_BG_COLOR, "border": "none", "fontWeight": "bolder"}, selected_style={"backgroundColor": CL_MAIN_COLOR, "color": CL_MAIN_BG_COLOR, "fontWeight": "bolder"}) for t in stage_order["CL"]]), 
+                html.Div(dcc.Tabs(id="cl-general-tabs", value=f"cl-tab-LEAGUE_STAGE", children=[dcc.Tab(id=f"cl-tab-{t}", label=f"{t.replace('_', ' ').title()}", value=f"cl-tab-{t}", style={"color": CL_MAIN_COLOR, "backgroundColor": CL_MAIN_BG_COLOR, "border": "none", "fontWeight": "bolder"}, selected_style={"backgroundColor": CL_MAIN_COLOR, "color": CL_MAIN_BG_COLOR, "fontWeight": "bolder"}) for t in stage_order["CL"]]),
                 className="tabs-container-cl", id="cl-tabs-container")])
             ])
         ]),
         dcc.Loading(id="loading", children=[html.Div(id="tabs-content")]),
-        html.Div(id="callback-div")
+        html.Div(id="callback-div"),
+        html.Footer(children=[
+            html.P("Data provided by Football-Data.org API. Dashboard created by Mauro Llanos.", style={"color": "#4287f5", "textAlign": "center", "padding": "10px"}),
+            html.Div(children=[
+                html.A("Check out my GitHub Repository", href="https://github.com/Mauriciollanos07", className="footer-link", target="_blank", rel="noopener noreferrer"),
+                html.A("Check out my Portfolio", href="https://portafolio-maurollanosdev.vercel.app/", className="footer-link", target="_blank", rel="noopener noreferrer")
+            ], className="footer-links-container")
+        ], className="footer")
 ], className="main-container")
 
 @callback(
