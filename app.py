@@ -12,7 +12,7 @@ from constants import WC_PRIMARY_COLOR, WC_MAIN_BG_COLOR, WC_MAIN_COLOR, CL_PRIM
 
 API_TOKEN = os.environ.get('API_TOKEN') # Get API token from environment variable
 API_URL_MATCHES_WC = os.environ.get('API_URL_MATCHES_WC') # Get WC API URL from environment variable
-API_URL_MATCHES_CL = os.environ.get('API_URL_MATCHES_CL') # Get CL API URL from environment variable 
+API_URL_MATCHES_CL = os.environ.get('API_URL_MATCHES_CL') # Get CL API URL from environment variable  
 
 # API and token
 headers = {'X-Auth-Token': API_TOKEN}

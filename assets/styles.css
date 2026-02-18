@@ -27,6 +27,9 @@ h3 {
 
 img {
     height: 25vh;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
 td, th {
@@ -151,6 +154,12 @@ td, th {
     background-color: #f5f0ec;
 }
 
+@media (max-width: 768px) {
+    .matchup-container {
+        width: 90vw;
+    }
+}
+
 .matchup-header{
     justify-self: center;
     color: #01164b;
@@ -226,8 +235,30 @@ td, th {
     background-color: var(--wc-primary-color);
 }
 
+#cl-image {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+}
 
-#wc-image, #cl-image{
-    display: block;
-    justify-self: center;
+#cl-image img {
+    width: 90vw;
+    height: 25vh;
+    object-fit: cover;
+    object-position: center;
+}
+
+#wc-image {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+}
+
+#wc-image img {
+    width: 90vw;
+    height: 25vh;
+    object-fit: cover;
+    object-position: center;
 }
